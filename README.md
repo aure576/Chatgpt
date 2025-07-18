@@ -1,0 +1,2 @@
+# Chatgpt
+tipo whatsapp
