@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Chat Cemento Pulido - Cliente</title>
+  <title>Chat Cemento Pulido - Moderador</title>
   <style>
     body { font-family: sans-serif; background: #fff; padding: 1em; }
     #chatbox { height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; }
@@ -36,7 +36,7 @@
       if (texto !== "") {
         fetch("/.netlify/functions/enviar", {
           method: "POST",
-          body: JSON.stringify({ message: texto, sender: "Cliente" }),
+          body: JSON.stringify({ message: texto, sender: "Decorador" }),
         });
         document.getElementById("entradaTexto").value = "";
       }
