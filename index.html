@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat Cemento Pulido - Cliente</title>
+  <style>
+    body { font-family: sans-serif; background: #fff; padding: 1em; }
+    #chatbox { height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; }
+    #entradaTexto { height: 3em; border: 2px solid red; width: 100%; }
+    #enviarBtn { background: red; color: white; border: none; padding: 1em; width: 100%; }
+    #mensajeInicial { color: black; font-weight: bold; text-align: center; margin-top: 2em; }
+  </style>
+</head>
+<body>
+  <h2>Aqui El Decorador en vivo y directo para hablar contigo...</h2>
+  <div id="chatbox"><div id="mensajeInicial">Chatea en directo con el Decorador</div></div>
+  <textarea id="entradaTexto" rows="2" placeholder="Escriba su mensaje aquí..."></textarea>
+  <button id="enviarBtn">Enviar</button>
+  <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+  <script>
+    const chatbox = document.getElementById("chatbox");
+    const mensajeInicial = document.getElementById("mensajeInicial");
+
+    const pusher = new Pusher("46e53dfe6f8d93182aaa", { cluster: "us2" });
+    const channel = pusher.subscribe("chataurelio");
+    channel.bind("chatbidireccion", function (data) {
+      if (mensajeInicial) mensajeInicial.style.display = "none";
+      const nuevoMensaje = document.createElement("p");
+      nuevoMensaje.textContent = `${data.sender}: ${data.message}`;
+      chatbox.appendChild(nuevoMensaje);
+    });
+
+    document.getElementById("enviarBtn").addEventListener("click", () => {
+      const texto = document.getElementById("entradaTexto").value.trim();
+      if (texto !== "") {
+        fetch("/.netlify/functions/enviar", {
+          method: "POST",
+          body: JSON.stringify({ message: texto, sender: "Cliente" }),
+        });
+        document.getElementById("entradaTexto").value = "";
+      }
+    });
+  </script>
+</body>
+</html>
